@@ -1,10 +1,11 @@
+require('dotenv').config({ path: '../.env' })
+ console.log(process.env.url)
 const neo4j = require('neo4j-driver');
-require('dotenv').config()
 const {
     url,
     db_username,
     db_password,
-} = process.env
+} = process.env;
 const driver = neo4j.driver(url, neo4j.auth.basic(db_username, db_password));
 const {createToken,findByAddress} = require("../token/baseTokenCall");
 
@@ -41,8 +42,13 @@ const creatTokenRelation = async (market) => {
 const findByMarketAddress = async (market) =>{
     const session = driver.session();
     const result = await session.run(`MATCH (u:Market {address : '${market.address}'} ) return u limit 1`)
-    await endSession(session);    
-    return result.records[0].get('u').properties
+    await endSession(session);
+    try {
+       return result.records[0].get('u').properties;
+    }
+    catch (error){
+        return null;
+    }
 }
 const createMarket = async (market) =>{
     const session = driver.session();
@@ -53,8 +59,10 @@ const createMarket = async (market) =>{
 }
 const findByAddressAndUpdate = async (market) =>{
     const session = driver.session();
-    const result = await session.run(`MATCH (u:Token {address : '${market.address}'}) SET u.priceDif0= ${market.priceDif0} , u.priceDif1 = ${market.priceDif1}, u.balanceToken0= ${market.balanceToken0}, u.balanceToken1= ${market.balanceToken1} return u`)
+    const result = await session.run(`MATCH (u:Market {address : '${market.address}'}) SET u.priceDif0= ${market.priceDif0} , u.priceDif1 = ${market.priceDif1}, u.balanceToken0= ${market.balanceToken0}, u.balanceToken1= ${market.balanceToken1} return u`)
+    
     await endSession(session);    
+    //console.log(result)
     return result.records[0].get('u').properties
 }
 const findByAddressAndDelete = async (market) =>{
@@ -69,13 +77,6 @@ const endSession = async(session) => {
     session.close();
 }
 
-
-//LONGEST MARKET ROUTE QUERY
-// MATCH (a:Market), (b:Market)
-// WHERE id(a) =0 AND id(b) = 4
-// WITH a,b
-// MATCH p=(a)-[*]-(b)
-// RETURN p, length(p) ORDER BY length(p) DESC LIMIT 1
 
 module.exports = {
     findAll,

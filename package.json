@@ -1,0 +1,28 @@
+{
+  "name": "tokenupdate2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smac98/FlashLoan.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smac98/FlashLoan/issues"
+  },
+  "homepage": "https://github.com/smac98/FlashLoan#readme",
+  "dependencies": {
+    "@neo4j/graphql": "^3.8.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.2",
+    "ethers": "^5.7.1",
+    "neo4j-driver": "^5.0.1",
+    "node-fetch": "^3.2.10",
+    "request-promise": "^4.2.6"
+  }
+}
