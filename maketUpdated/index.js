@@ -1,6 +1,4 @@
-//jji
 require("dotenv").config({ path: '../.env' });
-
 const {findAll,
     creatTokenRelation,
     findByMarketAddress,
